@@ -57,7 +57,7 @@ setup(
     name=PROJECT,
     version=VERSION,
 
-    description='A Wishbone output module to push events to one or more ZeroMQ push sockets.',
+    description='A Wishbone output module to push events to one or more ZeroMQ pull sockets.',
     long_description=long_description,
 
     author='Jelle Smet',

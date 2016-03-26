@@ -30,7 +30,7 @@ import zmq.green as zmq
 
 class ZMQPushOut(Actor):
 
-    '''**Pushes events out to one or more ZeroMQ pull modules.**
+    '''**Push events to one or more ZeroMQ pull sockets.**
 
     Expects to connect with one or more wishbone.input.push modules.  This
     module can be started in client or server mode.  In server mode, it waits
