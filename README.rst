@@ -1,3 +1,5 @@
+::
+
               __       __    __
     .--.--.--|__.-----|  |--|  |--.-----.-----.-----.
     |  |  |  |  |__ --|     |  _  |  _  |     |  -__|
@@ -11,7 +13,7 @@
     wishbone.output.zmqpush
     =======================
 
-    Version: 0.1.0
+    Version: 1.0.0
 
     Push events to one or more ZeroMQ pull sockets.
     -----------------------------------------------
@@ -48,5 +50,3 @@
 
             - inbox
                |  Incoming events submitted to the outside.
-
-
