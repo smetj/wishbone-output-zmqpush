@@ -27,11 +27,11 @@ from setuptools.command.test import test as TestCommand
 import sys
 
 PROJECT = 'wishbone_output_zmqpush'
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 
 install_requires = [
-    'wishbone>=2.1.1',
-    'pyzmq==15.2.0'
+    'wishbone>=3',
+    'pyzmq'
 ]
 
 try:
@@ -86,7 +86,7 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     entry_points={
-        'wishbone.output': [
+        'wishbone.module.output': [
             'zmqpush=wishbone_output_zmqpush:ZMQPushOut',
         ]
     }

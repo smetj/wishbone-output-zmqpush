@@ -22,4 +22,4 @@
 #
 #
 
-from zmqpushout import ZMQPushOut
+from .zmqpushout import ZMQPushOut

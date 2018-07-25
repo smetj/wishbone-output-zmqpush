@@ -22,13 +22,13 @@
 #
 #
 
-
-from wishbone import Actor
-from wishbone.event import Bulk
 import zmq.green as zmq
+from wishbone.module import OutputModule
+from wishbone.event import extractBulkItems
+from wishbone.error import ModuleInitFailure
 
 
-class ZMQPushOut(Actor):
+class ZMQPushOut(OutputModule):
 
     '''**Push events to one or more ZeroMQ pull sockets.**
 
@@ -66,27 +66,38 @@ class ZMQPushOut(Actor):
 
     '''
 
-    def __init__(self, actor_config, selection="@data", mode="server", interface="0.0.0.0", port=19283, clients=[]):
-        Actor.__init__(self, actor_config)
+    def __init__(
+            self,
+            actor_config,
+            selection="data",
+            native_events=False,
+            parallel_streams=1,
+            mode="server",
+            payload=None,
+            interface="0.0.0.0",
+            port=19283):
+        OutputModule.__init__(self, actor_config)
         self.pool.createQueue("inbox")
         self.registerConsumer(self.consume, "inbox")
 
     def preHook(self):
-
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PUSH)
-
+        uri = "tcp://{}:{}".format(self.kwargs.interface, self.kwargs.port)
         if self.kwargs.mode == "server":
-            self.socket.bind("tcp://*:%s" % self.kwargs.port)
+            self.socket.bind(uri)
             self.logging.info("Listening on port %s" % (self.kwargs.port))
+        elif self.kwargs.mode == 'client':
+            self.socket.connect(uri)
         else:
-            self.socket.connect("tcp://%s" % self.kwargs.clients[0])
+            raise ModuleInitFailure("Invalid mode {}. Choose one of ('server', 'client')")
 
     def consume(self, event):
-
-        if isinstance(event, Bulk):
-            data = event.dumpFieldAsString(self.kwargs.selection)
+        if event.isBulk():
+            data = [
+                e.get(self.kwargs.selection)
+                for e in extractBulkItems(event)
+            ]
+            self.socket.send_json(data)
         else:
-            data = str(event.get(self.kwargs.selection))
-
-        self.socket.send(data)
+            self.socket.send_json(event.get(self.kwargs.selection))
