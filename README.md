@@ -2,16 +2,16 @@
     .--.--.--|__.-----|  |--|  |--.-----.-----.-----.
     |  |  |  |  |__ --|     |  _  |  _  |     |  -__|
     |________|__|_____|__|__|_____|_____|__|__|_____|
-                                       version 2.1.2
+                                       version 3.1.1
 
     Build composable event pipeline servers with minimal effort.
 
 
     =======================
-    wishbone.output.zmqpush
+    wishbone.module.output.zmqpush
     =======================
 
-    Version: 0.1.0
+    Version: 0.2.0
 
     Push events to one or more ZeroMQ pull sockets.
     -----------------------------------------------
@@ -24,7 +24,7 @@
 
         Parameters:
 
-            - selection(str)("@data")
+            - selection(str)("data")
                |  The part of the event to submit externally.
                |  Use an empty string to refer to the complete event.
 
@@ -38,10 +38,6 @@
 
             - port(int)(19283)
                |  The port to bind to in server <mode>.
-
-            - clients(list)([])
-               |  A list of hostname:port entries to connect to.
-               |  Only valid when running in "client" <mode>.
 
 
         Queues:
